@@ -1,8 +1,21 @@
-import { Router, type IRouter } from "express";
-import healthRouter from "./health";
+import { Router } from "express";
+import { db } from "@workspace/db";
+import locationsRouter from "./locations";
+import staffRouter from "./staff";
+import certificationTypesRouter from "./certificationTypes";
+import certificationsRouter from "./certifications";
+import dashboardRouter from "./dashboard";
 
-const router: IRouter = Router();
+const router = Router();
 
-router.use(healthRouter);
+router.get("/healthz", async (_req, res) => {
+  res.json({ status: "ok" });
+});
+
+router.use(locationsRouter);
+router.use(staffRouter);
+router.use(certificationTypesRouter);
+router.use(certificationsRouter);
+router.use(dashboardRouter);
 
 export default router;

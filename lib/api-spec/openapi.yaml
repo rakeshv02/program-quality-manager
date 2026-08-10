@@ -3,20 +3,29 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Texas Childcare Advisors Compliance Tracker API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: locations
+    description: Daycare center locations
+  - name: staff
+    description: Staff members
+  - name: certificationTypes
+    description: Certification type definitions
+  - name: certifications
+    description: Staff certifications
+  - name: dashboard
+    description: Dashboard summary and analytics
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +33,513 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /locations:
+    get:
+      operationId: listLocations
+      tags: [locations]
+      summary: List all locations for the authenticated user
+      responses:
+        "200":
+          description: List of locations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Location"
+    post:
+      operationId: createLocation
+      tags: [locations]
+      summary: Create a new location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationInput"
+      responses:
+        "201":
+          description: Created location
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Location"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Free tier limit reached (3 locations max)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /locations/{id}:
+    get:
+      operationId: getLocation
+      tags: [locations]
+      summary: Get a location by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Location
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Location"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateLocation
+      tags: [locations]
+      summary: Update a location
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationUpdate"
+      responses:
+        "200":
+          description: Updated location
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Location"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteLocation
+      tags: [locations]
+      summary: Delete a location
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /staff:
+    get:
+      operationId: listStaff
+      tags: [staff]
+      summary: List staff members, optionally filtered by location
+      parameters:
+        - name: locationId
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [active, inactive]
+      responses:
+        "200":
+          description: List of staff members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StaffMember"
+    post:
+      operationId: createStaffMember
+      tags: [staff]
+      summary: Add a new staff member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StaffMemberInput"
+      responses:
+        "201":
+          description: Created staff member
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StaffMember"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Free tier limit reached (15 staff max)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /staff/{id}:
+    get:
+      operationId: getStaffMember
+      tags: [staff]
+      summary: Get a staff member by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Staff member
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StaffMember"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateStaffMember
+      tags: [staff]
+      summary: Update a staff member
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StaffMemberUpdate"
+      responses:
+        "200":
+          description: Updated staff member
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StaffMember"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteStaffMember
+      tags: [staff]
+      summary: Delete a staff member
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /staff/{id}/certifications:
+    get:
+      operationId: getStaffCertifications
+      tags: [staff]
+      summary: Get all certifications for a staff member with computed status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: List of certifications with status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CertificationWithStatus"
+        "404":
+          description: Staff not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /certification-types:
+    get:
+      operationId: listCertificationTypes
+      tags: [certificationTypes]
+      summary: List all certification types
+      responses:
+        "200":
+          description: List of certification types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CertificationType"
+    post:
+      operationId: createCertificationType
+      tags: [certificationTypes]
+      summary: Create a custom certification type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CertificationTypeInput"
+      responses:
+        "201":
+          description: Created certification type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CertificationType"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /certifications:
+    get:
+      operationId: listCertifications
+      tags: [certifications]
+      summary: List certifications, optionally filtered by staff or location
+      parameters:
+        - name: staffId
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: locationId
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [valid, expiring, expired]
+      responses:
+        "200":
+          description: List of certifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CertificationWithStatus"
+    post:
+      operationId: createCertification
+      tags: [certifications]
+      summary: Add a certification record for a staff member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CertificationInput"
+      responses:
+        "201":
+          description: Created certification
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CertificationWithStatus"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /certifications/{id}:
+    patch:
+      operationId: updateCertification
+      tags: [certifications]
+      summary: Update a certification record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CertificationUpdate"
+      responses:
+        "200":
+          description: Updated certification
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CertificationWithStatus"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteCertification
+      tags: [certifications]
+      summary: Delete a certification record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard:
+    get:
+      operationId: getDashboard
+      tags: [dashboard]
+      summary: Get compliance dashboard summary
+      parameters:
+        - name: locationId
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /expiring-certifications:
+    get:
+      operationId: listExpiringCertifications
+      tags: [certifications]
+      summary: Get certifications expiring within the next 30 days
+      parameters:
+        - name: locationId
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: daysAhead
+          in: query
+          required: false
+          schema:
+            type: number
+            default: 30
+      responses:
+        "200":
+          description: List of expiring certifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CertificationWithStatus"
+
+  /rising-star:
+    get:
+      operationId: getRisingStarScore
+      tags: [dashboard]
+      summary: Get Rising Star compliance score for a location
+      parameters:
+        - name: locationId
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Rising Star score and breakdown
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RisingStarScore"
+        "404":
+          description: Location not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /export/csv:
+    get:
+      operationId: exportCsv
+      tags: [dashboard]
+      summary: Export staff certification data as CSV
+      parameters:
+        - name: locationId
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: CSV file content
+          content:
+            text/csv:
+              schema:
+                type: string
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +550,389 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    Location:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        address:
+          type: ["string", "null"]
+        city:
+          type: ["string", "null"]
+        state:
+          type: ["string", "null"]
+        zip:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - name
+        - createdAt
+        - updatedAt
+
+    LocationInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+      required:
+        - name
+
+    LocationUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+
+    StaffMember:
+      type: object
+      properties:
+        id:
+          type: number
+        locationId:
+          type: number
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: ["string", "null"]
+        role:
+          type: string
+        status:
+          type: string
+          enum: [active, inactive]
+        hireDate:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - locationId
+        - firstName
+        - lastName
+        - role
+        - status
+        - createdAt
+        - updatedAt
+
+    StaffMemberInput:
+      type: object
+      properties:
+        locationId:
+          type: number
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        email:
+          type: string
+        role:
+          type: string
+          minLength: 1
+        status:
+          type: string
+          enum: [active, inactive]
+        hireDate:
+          type: string
+      required:
+        - locationId
+        - firstName
+        - lastName
+        - role
+
+    StaffMemberUpdate:
+      type: object
+      properties:
+        locationId:
+          type: number
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        email:
+          type: string
+        role:
+          type: string
+          minLength: 1
+        status:
+          type: string
+          enum: [active, inactive]
+        hireDate:
+          type: string
+
+    CertificationType:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        description:
+          type: ["string", "null"]
+        isDefault:
+          type: boolean
+        validityMonths:
+          type: ["number", "null"]
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - isDefault
+        - createdAt
+
+    CertificationTypeInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        validityMonths:
+          type: number
+      required:
+        - name
+
+    CertificationWithStatus:
+      type: object
+      properties:
+        id:
+          type: number
+        staffId:
+          type: number
+        certificationTypeId:
+          type: number
+        certificationTypeName:
+          type: string
+        staffFirstName:
+          type: string
+        staffLastName:
+          type: string
+        locationId:
+          type: number
+        locationName:
+          type: string
+        issuedDate:
+          type: ["string", "null"]
+        expirationDate:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [valid, expiring, expired, no_expiry]
+        daysUntilExpiration:
+          type: ["number", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - staffId
+        - certificationTypeId
+        - certificationTypeName
+        - staffFirstName
+        - staffLastName
+        - locationId
+        - locationName
+        - status
+        - createdAt
+        - updatedAt
+
+    CertificationInput:
+      type: object
+      properties:
+        staffId:
+          type: number
+        certificationTypeId:
+          type: number
+        issuedDate:
+          type: string
+        expirationDate:
+          type: string
+        notes:
+          type: string
+      required:
+        - staffId
+        - certificationTypeId
+
+    CertificationUpdate:
+      type: object
+      properties:
+        certificationTypeId:
+          type: number
+        issuedDate:
+          type: string
+        expirationDate:
+          type: string
+        notes:
+          type: string
+
+    DashboardSummary:
+      type: object
+      properties:
+        totalStaff:
+          type: number
+        compliantStaff:
+          type: number
+        expiringSoonStaff:
+          type: number
+        expiredCertifications:
+          type: number
+        totalCertifications:
+          type: number
+        locationBreakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/LocationComplianceSummary"
+        freeTierUsage:
+          $ref: "#/components/schemas/FreeTierUsage"
+      required:
+        - totalStaff
+        - compliantStaff
+        - expiringSoonStaff
+        - expiredCertifications
+        - totalCertifications
+        - locationBreakdown
+        - freeTierUsage
+
+    LocationComplianceSummary:
+      type: object
+      properties:
+        locationId:
+          type: number
+        locationName:
+          type: string
+        totalStaff:
+          type: number
+        compliantStaff:
+          type: number
+        expiringSoonCount:
+          type: number
+        expiredCount:
+          type: number
+      required:
+        - locationId
+        - locationName
+        - totalStaff
+        - compliantStaff
+        - expiringSoonCount
+        - expiredCount
+
+    FreeTierUsage:
+      type: object
+      properties:
+        staffCount:
+          type: number
+        staffLimit:
+          type: number
+        locationCount:
+          type: number
+        locationLimit:
+          type: number
+      required:
+        - staffCount
+        - staffLimit
+        - locationCount
+        - locationLimit
+
+    RisingStarScore:
+      type: object
+      properties:
+        locationId:
+          type: number
+        locationName:
+          type: string
+        currentLevel:
+          type: number
+        nextLevel:
+          type: ["number", "null"]
+        overallScore:
+          type: number
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/RisingStarCategory"
+        recommendations:
+          type: array
+          items:
+            type: string
+      required:
+        - locationId
+        - locationName
+        - currentLevel
+        - overallScore
+        - categories
+        - recommendations
+
+    RisingStarCategory:
+      type: object
+      properties:
+        name:
+          type: string
+        score:
+          type: number
+        maxScore:
+          type: number
+        requirements:
+          type: array
+          items:
+            $ref: "#/components/schemas/RisingStarRequirement"
+      required:
+        - name
+        - score
+        - maxScore
+        - requirements
+
+    RisingStarRequirement:
+      type: object
+      properties:
+        description:
+          type: string
+        met:
+          type: boolean
+        detail:
+          type: ["string", "null"]
+      required:
+        - description
+        - met

@@ -1,45 +1,67 @@
-# [Project name]
+# Texas Childcare Advisors Compliance Tracker
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A SaaS compliance dashboard for Texas daycare center directors to track staff certifications, expiration dates, and Rising Star scoring. Multi-location support with free tier limits (15 staff, 3 locations).
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/compliance-tracker run dev` — run the frontend (port assigned by workflow)
+- `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - Required env: `DATABASE_URL` — Postgres connection string
+- Required env: `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY`, `VITE_CLERK_PUBLISHABLE_KEY` — auto-provisioned by Replit Clerk
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
+- Frontend: React + Vite, Tailwind CSS v4, shadcn/ui, wouter, TanStack Query
+- Auth: Clerk (Replit-managed)
 - API: Express 5
 - DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Validation: Zod v3 (catalog pinned), `drizzle-zod`
+- API codegen: Orval (from OpenAPI spec in `lib/api-spec/openapi.yaml`)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/compliance-tracker/` — React frontend
+- `artifacts/api-server/` — Express API server
+- `lib/api-spec/openapi.yaml` — OpenAPI contract (source of truth)
+- `lib/api-client-react/src/generated/` — generated React Query hooks (DO NOT edit)
+- `lib/api-zod/src/generated/` — generated Zod schemas for server validation (DO NOT edit)
+- `lib/db/src/schema/` — Drizzle DB schema (locations, staff, certificationTypes, certifications)
 
-## Architecture decisions
+## Architecture Decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- **Orval generates `zod.int()` (Zod v4 API) but catalog pins zod v3** — all integer fields in `openapi.yaml` use `type: number` instead of `type: integer` to make Orval emit `zod.number()` which is compatible with v3.
+- **Free tier limits enforced server-side** — 15 staff max and 3 locations max checked in POST route handlers, returning HTTP 403 when exceeded.
+- **All data is user-scoped via Clerk userId** — locations are tagged with `clerk_user_id`; staff and certifications cascade from locations, enforcing data isolation.
+- **Rising Star scoring is computed on-the-fly** from live certification data — no separate table needed for MVP.
+- **Certification status (`valid`/`expiring`/`expired`/`no_expiry`) is computed at read time** — not stored, always fresh.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Multi-location daycare compliance tracker
+- Staff certification management (add/edit/delete with expiration tracking)
+- 10 default certification types pre-seeded (CPR, First Aid, CDA, Food Handler, etc.)
+- Dashboard with compliant/expiring/expired counts and location breakdown
+- Rising Star calculator (1–4 star levels based on certification coverage)
+- CSV export of all certification data
+- Free tier: 15 staff, 3 locations
 
-## User preferences
+## User Preferences
 
 _Populate as you build — explicit user instructions worth remembering across sessions._
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- After changing `lib/api-spec/openapi.yaml`, always run `pnpm --filter @workspace/api-spec run codegen` before using new hooks.
+- After changing `lib/db/src/schema/`, run `pnpm run typecheck:libs` before leaf artifact typechecks or you'll get "no exported member" errors.
+- Use `type: number` (not `type: integer`) in `openapi.yaml` — see Architecture Decisions above.
+- The Clerk "development keys" warning in the browser console is expected and normal during development.
 
 ## Pointers
 
 - See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- See the `clerk-auth` skill for Clerk setup and customization
