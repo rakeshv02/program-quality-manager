@@ -12,6 +12,9 @@ export const staffTable = pgTable("staff", {
   role: text("role").notNull(),
   status: text("status").notNull().default("active"),
   hireDate: date("hire_date", { mode: "string" }),
+  yearsExperience: integer("years_experience"),
+  annualTrainingHours: integer("annual_training_hours").notNull().default(0),
+  preserviceHours: integer("preservice_hours").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
 });

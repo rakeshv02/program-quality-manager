@@ -18,6 +18,10 @@ export interface StaffMember {
   status: StaffMemberStatus;
   /** @nullable */
   hireDate?: string | null;
+  /** @nullable */
+  yearsExperience?: number | null;
+  annualTrainingHours: number;
+  preserviceHours: number;
   createdAt: string;
   updatedAt: string;
 }

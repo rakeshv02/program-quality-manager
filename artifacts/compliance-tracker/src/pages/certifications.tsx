@@ -299,7 +299,7 @@ export default function CertificationsPage() {
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className={badge.classes}>
-                        {cert.daysUntilExpiration !== null && cert.daysUntilExpiration > 0 && cert.status !== 'valid'
+                        {cert.daysUntilExpiration != null && cert.daysUntilExpiration > 0 && cert.status !== 'valid'
                           ? `Exp in ${cert.daysUntilExpiration}d`
                           : badge.label}
                       </Badge>

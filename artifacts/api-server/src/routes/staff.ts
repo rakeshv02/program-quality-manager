@@ -51,7 +51,7 @@ router.get("/staff", requireAuth, async (req, res): Promise<void> => {
   res.json(filtered);
 });
 
-// Create a new staff member (free tier: 15 max total)
+// Create a new staff member (free tier: 12 max total)
 router.post("/staff", requireAuth, async (req, res): Promise<void> => {
   const userId = (req as any).userId;
 
@@ -72,8 +72,8 @@ router.post("/staff", requireAuth, async (req, res): Promise<void> => {
     .from(staffTable)
     .where(inArray(staffTable.locationId, locationIds));
 
-  if (existing.length >= 15) {
-    res.status(403).json({ error: "Free tier limit reached: maximum 15 staff members allowed" });
+  if (existing.length >= 12) {
+    res.status(403).json({ error: "Free tier limit reached. Upgrade to Pro to add more than 12 staff members." });
     return;
   }
 

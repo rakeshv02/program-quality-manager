@@ -23,7 +23,7 @@ router.get("/locations", requireAuth, async (req, res): Promise<void> => {
   res.json(locations);
 });
 
-// Create a new location (free tier: 3 max)
+// Create a new location (free tier: 2 max)
 router.post("/locations", requireAuth, async (req, res): Promise<void> => {
   const userId = (req as any).userId;
 
@@ -32,8 +32,8 @@ router.post("/locations", requireAuth, async (req, res): Promise<void> => {
     .from(locationsTable)
     .where(eq(locationsTable.clerkUserId, userId));
 
-  if (existing.length >= 3) {
-    res.status(403).json({ error: "Free tier limit reached: maximum 3 locations allowed" });
+  if (existing.length >= 2) {
+    res.status(403).json({ error: "Free tier limit reached. Upgrade to Pro to add more than 2 locations." });
     return;
   }
 

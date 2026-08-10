@@ -5,6 +5,7 @@
  * Texas Childcare Advisors Compliance Tracker API
  * OpenAPI spec version: 0.1.0
  */
+import type { LocationUpdateFacilityType } from './locationUpdateFacilityType';
 
 export interface LocationUpdate {
   /** @minLength 1 */
@@ -13,4 +14,5 @@ export interface LocationUpdate {
   city?: string;
   state?: string;
   zip?: string;
+  facilityType?: LocationUpdateFacilityType;
 }

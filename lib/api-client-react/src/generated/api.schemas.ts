@@ -13,6 +13,15 @@ export interface ErrorResponse {
   error: string;
 }
 
+export type LocationFacilityType = typeof LocationFacilityType[keyof typeof LocationFacilityType];
+
+
+export const LocationFacilityType = {
+  child_care_center: 'child_care_center',
+  licensed_home: 'licensed_home',
+  school_age: 'school_age',
+} as const;
+
 export interface Location {
   id: number;
   name: string;
@@ -24,9 +33,19 @@ export interface Location {
   state?: string | null;
   /** @nullable */
   zip?: string | null;
+  facilityType: LocationFacilityType;
   createdAt: string;
   updatedAt: string;
 }
+
+export type LocationInputFacilityType = typeof LocationInputFacilityType[keyof typeof LocationInputFacilityType];
+
+
+export const LocationInputFacilityType = {
+  child_care_center: 'child_care_center',
+  licensed_home: 'licensed_home',
+  school_age: 'school_age',
+} as const;
 
 export interface LocationInput {
   /** @minLength 1 */
@@ -35,7 +54,17 @@ export interface LocationInput {
   city?: string;
   state?: string;
   zip?: string;
+  facilityType?: LocationInputFacilityType;
 }
+
+export type LocationUpdateFacilityType = typeof LocationUpdateFacilityType[keyof typeof LocationUpdateFacilityType];
+
+
+export const LocationUpdateFacilityType = {
+  child_care_center: 'child_care_center',
+  licensed_home: 'licensed_home',
+  school_age: 'school_age',
+} as const;
 
 export interface LocationUpdate {
   /** @minLength 1 */
@@ -44,6 +73,7 @@ export interface LocationUpdate {
   city?: string;
   state?: string;
   zip?: string;
+  facilityType?: LocationUpdateFacilityType;
 }
 
 export type StaffMemberStatus = typeof StaffMemberStatus[keyof typeof StaffMemberStatus];
@@ -65,6 +95,10 @@ export interface StaffMember {
   status: StaffMemberStatus;
   /** @nullable */
   hireDate?: string | null;
+  /** @nullable */
+  yearsExperience?: number | null;
+  annualTrainingHours: number;
+  preserviceHours: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -88,6 +122,9 @@ export interface StaffMemberInput {
   role: string;
   status?: StaffMemberInputStatus;
   hireDate?: string;
+  yearsExperience?: number;
+  annualTrainingHours?: number;
+  preserviceHours?: number;
 }
 
 export type StaffMemberUpdateStatus = typeof StaffMemberUpdateStatus[keyof typeof StaffMemberUpdateStatus];
@@ -109,6 +146,9 @@ export interface StaffMemberUpdate {
   role?: string;
   status?: StaffMemberUpdateStatus;
   hireDate?: string;
+  yearsExperience?: number;
+  annualTrainingHours?: number;
+  preserviceHours?: number;
 }
 
 export interface CertificationType {

@@ -26,6 +26,7 @@ export const ListLocationsResponseItem = zod.object({
   "city": zod.string().nullish(),
   "state": zod.string().nullish(),
   "zip": zod.string().nullish(),
+  "facilityType": zod.enum(['child_care_center', 'licensed_home', 'school_age']),
   "createdAt": zod.string(),
   "updatedAt": zod.string()
 })
@@ -43,7 +44,8 @@ export const CreateLocationBody = zod.object({
   "address": zod.string().optional(),
   "city": zod.string().optional(),
   "state": zod.string().optional(),
-  "zip": zod.string().optional()
+  "zip": zod.string().optional(),
+  "facilityType": zod.enum(['child_care_center', 'licensed_home', 'school_age']).optional()
 })
 
 export const CreateLocationResponse = zod.object({
@@ -53,6 +55,7 @@ export const CreateLocationResponse = zod.object({
   "city": zod.string().nullish(),
   "state": zod.string().nullish(),
   "zip": zod.string().nullish(),
+  "facilityType": zod.enum(['child_care_center', 'licensed_home', 'school_age']),
   "createdAt": zod.string(),
   "updatedAt": zod.string()
 })
@@ -72,6 +75,7 @@ export const GetLocationResponse = zod.object({
   "city": zod.string().nullish(),
   "state": zod.string().nullish(),
   "zip": zod.string().nullish(),
+  "facilityType": zod.enum(['child_care_center', 'licensed_home', 'school_age']),
   "createdAt": zod.string(),
   "updatedAt": zod.string()
 })
@@ -92,7 +96,8 @@ export const UpdateLocationBody = zod.object({
   "address": zod.string().optional(),
   "city": zod.string().optional(),
   "state": zod.string().optional(),
-  "zip": zod.string().optional()
+  "zip": zod.string().optional(),
+  "facilityType": zod.enum(['child_care_center', 'licensed_home', 'school_age']).optional()
 })
 
 export const UpdateLocationResponse = zod.object({
@@ -102,6 +107,7 @@ export const UpdateLocationResponse = zod.object({
   "city": zod.string().nullish(),
   "state": zod.string().nullish(),
   "zip": zod.string().nullish(),
+  "facilityType": zod.enum(['child_care_center', 'licensed_home', 'school_age']),
   "createdAt": zod.string(),
   "updatedAt": zod.string()
 })
@@ -134,6 +140,9 @@ export const ListStaffResponseItem = zod.object({
   "role": zod.string(),
   "status": zod.enum(['active', 'inactive']),
   "hireDate": zod.string().nullish(),
+  "yearsExperience": zod.number().nullish(),
+  "annualTrainingHours": zod.number(),
+  "preserviceHours": zod.number(),
   "createdAt": zod.string(),
   "updatedAt": zod.string()
 })
@@ -155,7 +164,10 @@ export const CreateStaffMemberBody = zod.object({
   "email": zod.string().optional(),
   "role": zod.string().min(1),
   "status": zod.enum(['active', 'inactive']).optional(),
-  "hireDate": zod.string().optional()
+  "hireDate": zod.string().optional(),
+  "yearsExperience": zod.number().optional(),
+  "annualTrainingHours": zod.number().optional(),
+  "preserviceHours": zod.number().optional()
 })
 
 export const CreateStaffMemberResponse = zod.object({
@@ -167,6 +179,9 @@ export const CreateStaffMemberResponse = zod.object({
   "role": zod.string(),
   "status": zod.enum(['active', 'inactive']),
   "hireDate": zod.string().nullish(),
+  "yearsExperience": zod.number().nullish(),
+  "annualTrainingHours": zod.number(),
+  "preserviceHours": zod.number(),
   "createdAt": zod.string(),
   "updatedAt": zod.string()
 })
@@ -188,6 +203,9 @@ export const GetStaffMemberResponse = zod.object({
   "role": zod.string(),
   "status": zod.enum(['active', 'inactive']),
   "hireDate": zod.string().nullish(),
+  "yearsExperience": zod.number().nullish(),
+  "annualTrainingHours": zod.number(),
+  "preserviceHours": zod.number(),
   "createdAt": zod.string(),
   "updatedAt": zod.string()
 })
@@ -212,7 +230,10 @@ export const UpdateStaffMemberBody = zod.object({
   "email": zod.string().optional(),
   "role": zod.string().min(1).optional(),
   "status": zod.enum(['active', 'inactive']).optional(),
-  "hireDate": zod.string().optional()
+  "hireDate": zod.string().optional(),
+  "yearsExperience": zod.number().optional(),
+  "annualTrainingHours": zod.number().optional(),
+  "preserviceHours": zod.number().optional()
 })
 
 export const UpdateStaffMemberResponse = zod.object({
@@ -224,6 +245,9 @@ export const UpdateStaffMemberResponse = zod.object({
   "role": zod.string(),
   "status": zod.enum(['active', 'inactive']),
   "hireDate": zod.string().nullish(),
+  "yearsExperience": zod.number().nullish(),
+  "annualTrainingHours": zod.number(),
+  "preserviceHours": zod.number(),
   "createdAt": zod.string(),
   "updatedAt": zod.string()
 })

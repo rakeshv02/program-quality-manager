@@ -18,4 +18,7 @@ export interface StaffMemberUpdate {
   role?: string;
   status?: StaffMemberUpdateStatus;
   hireDate?: string;
+  yearsExperience?: number;
+  annualTrainingHours?: number;
+  preserviceHours?: number;
 }

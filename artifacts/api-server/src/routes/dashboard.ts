@@ -48,7 +48,7 @@ router.get("/dashboard", requireAuth, async (req, res): Promise<void> => {
       expiredCertifications: 0,
       totalCertifications: 0,
       locationBreakdown: [],
-      freeTierUsage: { staffCount: 0, staffLimit: 15, locationCount: 0, locationLimit: 3 },
+      freeTierUsage: { staffCount: 0, staffLimit: 12, locationCount: 0, locationLimit: 2 },
     });
     return;
   }
@@ -156,9 +156,9 @@ router.get("/dashboard", requireAuth, async (req, res): Promise<void> => {
     locationBreakdown,
     freeTierUsage: {
       staffCount: allUserStaff.length,
-      staffLimit: 15,
+      staffLimit: 12,
       locationCount: allLocationIds.length,
-      locationLimit: 3,
+      locationLimit: 2,
     },
   });
 });
