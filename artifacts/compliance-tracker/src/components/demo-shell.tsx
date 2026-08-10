@@ -74,16 +74,16 @@ export function DemoShell({
           </div>
           <div className="flex flex-col">
             <span className="font-bold text-xs tracking-tight leading-tight">Texas Childcare Advisors</span>
-            <span className="text-[9px] text-sidebar-foreground/60 uppercase tracking-wider font-semibold">Compliance</span>
+            <span className="text-[9px] text-sidebar-foreground/60 uppercase tracking-wider font-semibold">Quality</span>
           </div>
         </div>
 
-        {/* Facility Type Selector in Sidebar */}
+        {/* Program Type Selector in Sidebar */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="w-full px-3 py-2.5 border-b border-sidebar-border/50 text-left hover:bg-sidebar-accent/40 transition-colors group">
               <p className="text-[10px] font-semibold text-sidebar-foreground/50 uppercase tracking-wider mb-1 flex items-center gap-1">
-                <BookOpen className="w-2.5 h-2.5" />Facility Type
+                <BookOpen className="w-2.5 h-2.5" />Program Type
               </p>
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 min-w-0">
@@ -100,7 +100,7 @@ export function DemoShell({
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-60" align="start" sideOffset={4}>
-            <DropdownMenuLabel className="text-xs text-muted-foreground pb-1">Select Facility Type</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-xs text-muted-foreground pb-1">Select Program Type</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {(Object.entries(FACILITY_META) as [FacilityType, typeof FACILITY_META[FacilityType]][]).map(([key, m]) => (
               <DropdownMenuItem

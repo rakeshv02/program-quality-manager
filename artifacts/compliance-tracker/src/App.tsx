@@ -30,7 +30,7 @@ if (!clerkPubKey) {
   throw new Error('Missing VITE_CLERK_PUBLISHABLE_KEY');
 }
 
-// Build appearance matching the compliance tracker brand
+// Build appearance matching the Program Quality Manager brand
 const clerkAppearance = {
   theme: shadcn,
   cssLayerName: "clerk",
@@ -86,7 +86,7 @@ function SignInPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Texas Childcare Advisors</h1>
-          <p className="text-gray-500 mt-1">Compliance Tracker</p>
+          <p className="text-gray-500 mt-1">Program Quality Manager</p>
         </div>
         <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} />
       </div>
@@ -179,7 +179,7 @@ function Router() {
       signInUrl={`${basePath}/sign-in`}
       signUpUrl={`${basePath}/sign-up`}
       localization={{
-        signIn: { start: { title: "Welcome back", subtitle: "Sign in to your compliance dashboard" } },
+        signIn: { start: { title: "Welcome back", subtitle: "Sign in to your quality dashboard" } },
         signUp: { start: { title: "Create your account", subtitle: "Free tier: 15 staff, 3 locations" } },
       }}
       routerPush={(to) => setLocation(stripBase(to))}

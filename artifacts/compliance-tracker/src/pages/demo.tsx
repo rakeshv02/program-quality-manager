@@ -136,7 +136,7 @@ function DemoDashboard({
 
   return (
     <div className="space-y-6">
-      {/* ── Facility Type Selector — first thing users see ── */}
+      {/* ── Program Type Selector — first thing users see ── */}
       <FacilityTypeSelector
         activeFacilityType={activeFacilityType}
         setActiveFacilityType={setActiveFacilityType}
@@ -144,12 +144,12 @@ function DemoDashboard({
 
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-        <p className="text-gray-500 text-sm mt-0.5">Certification compliance overview for your facilities.</p>
+        <p className="text-gray-500 text-sm mt-0.5">Staff certification and quality overview across your programs.</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card><CardContent className="p-6"><div className="flex items-center gap-4"><div className="p-3 rounded-md bg-blue-50 text-blue-600"><Users className="w-6 h-6" /></div><div><p className="text-sm font-medium text-gray-500">Total Staff</p><h3 className="text-2xl font-bold text-gray-900">{stats.totalStaff}</h3></div></div></CardContent></Card>
-        <Card><CardContent className="p-6"><div className="flex items-center gap-4"><div className="p-3 rounded-md bg-green-50 text-green-600"><CheckCircle2 className="w-6 h-6" /></div><div><p className="text-sm font-medium text-gray-500">Compliant Staff</p><h3 className="text-2xl font-bold text-gray-900">{stats.compliantStaff}</h3></div></div></CardContent></Card>
+        <Card><CardContent className="p-6"><div className="flex items-center gap-4"><div className="p-3 rounded-md bg-green-50 text-green-600"><CheckCircle2 className="w-6 h-6" /></div><div><p className="text-sm font-medium text-gray-500">Certified Staff</p><h3 className="text-2xl font-bold text-gray-900">{stats.compliantStaff}</h3></div></div></CardContent></Card>
         <Card><CardContent className="p-6"><div className="flex items-center gap-4"><div className="p-3 rounded-md bg-amber-50 text-amber-600"><AlertTriangle className="w-6 h-6" /></div><div><p className="text-sm font-medium text-gray-500">Expiring Soon</p><h3 className="text-2xl font-bold text-amber-600">{stats.expiringSoonStaff}</h3></div></div></CardContent></Card>
         <Card><CardContent className="p-6"><div className="flex items-center gap-4"><div className="p-3 rounded-md bg-red-50 text-red-600"><XOctagon className="w-6 h-6" /></div><div><p className="text-sm font-medium text-gray-500">Expired Certs</p><h3 className="text-2xl font-bold text-red-600">{stats.expiredCertifications}</h3></div></div></CardContent></Card>
       </div>
@@ -159,7 +159,7 @@ function DemoDashboard({
           <Card>
             <CardHeader className="pb-3 border-b">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg font-medium">Location Compliance Breakdown</CardTitle>
+                <CardTitle className="text-lg font-medium">Program Quality Overview</CardTitle>
                 <Building2 className="w-5 h-5 text-gray-400" />
               </div>
             </CardHeader>
@@ -168,9 +168,9 @@ function DemoDashboard({
                 <TableHeader className="bg-gray-50">
                   <TableRow>
                     <TableHead>Location</TableHead>
-                    <TableHead>Facility Type</TableHead>
+                    <TableHead>Program Type</TableHead>
                     <TableHead className="text-right">Staff</TableHead>
-                    <TableHead className="text-right">Compliant</TableHead>
+                    <TableHead className="text-right">Certified</TableHead>
                     <TableHead className="text-right">Expiring</TableHead>
                     <TableHead className="text-right">Expired</TableHead>
                   </TableRow>
@@ -304,7 +304,7 @@ function DemoStaff({ activeLocationId }: { activeLocationId: number | null }) {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">Staff Management</h1>
-          <p className="text-gray-500 mt-1">Personnel and training compliance. Click any row to see certifications.</p>
+          <p className="text-gray-500 mt-1">Staff certifications and training quality. Click any row for details.</p>
         </div>
         <div className="relative">
           <Button onClick={handleAdd} className="bg-primary hover:bg-primary/90">
@@ -332,7 +332,7 @@ function DemoStaff({ activeLocationId }: { activeLocationId: number | null }) {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Role</TableHead>
-              <TableHead>Facility Type</TableHead>
+              <TableHead>Program Type</TableHead>
               <TableHead>Annual Training</TableHead>
               <TableHead>Pre-service</TableHead>
               <TableHead>Hire Date</TableHead>
@@ -512,7 +512,7 @@ function DemoReports({ activeLocationId }: { activeLocationId: number | null }) 
           { label: "Report Date", value: "August 10, 2026" },
           { label: "Location", value: locationLabel },
           { label: "Total Staff", value: String(filteredStaff.length) },
-          { label: "Fully Compliant", value: String(compliantCount), color: "text-green-600" },
+          { label: "Fully Certified", value: String(compliantCount), color: "text-green-600" },
           { label: "Needs Action", value: String(actionCount), color: "text-red-600" },
         ].map(item => (
           <div key={item.label}>
@@ -524,7 +524,7 @@ function DemoReports({ activeLocationId }: { activeLocationId: number | null }) 
 
       <Card className="overflow-hidden">
         <CardHeader className="pb-3 border-b bg-gray-50">
-          <CardTitle className="text-base font-semibold text-gray-800">Staff Compliance Report — {locationLabel}</CardTitle>
+          <CardTitle className="text-base font-semibold text-gray-800">Staff Certification Report — {locationLabel}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <Table>
@@ -542,7 +542,7 @@ function DemoReports({ activeLocationId }: { activeLocationId: number | null }) 
               {reportRows.map(row => {
                 const overall = row.certStatus !== "valid" ? row.certStatus : (!row.annualOk || !row.preserviceOk) ? "expiring" : "valid";
                 const badge = getStatusBadge(overall);
-                const badgeLabel = overall === "expired" ? "Action Needed" : overall === "expiring" ? "Incomplete" : "Compliant";
+                const badgeLabel = overall === "expired" ? "Action Needed" : overall === "expiring" ? "Incomplete" : "Certified";
                 return (
                   <TableRow key={row.id} className="align-top">
                     <TableCell className="font-medium text-gray-900 py-3">{row.firstName} {row.lastName}</TableCell>
@@ -787,7 +787,7 @@ function DemoSettings({ activeLocationId }: { activeLocationId: number | null })
           <div>
             <p className="text-xs font-semibold text-green-700 uppercase tracking-wider mb-1">Current Plan</p>
             <p className="text-xl font-bold text-gray-900">Free Tier</p>
-            <p className="text-sm text-gray-500 mt-1">{locationsData.length} of 2 locations · 20 of 12 staff · All facility types (TAC 744, 746, 747)</p>
+            <p className="text-sm text-gray-500 mt-1">{locationsData.length} of 2 locations · 20 of 12 staff · All program types (TAC 744, 746, 747)</p>
           </div>
           <Link href="/sign-up" className="shrink-0 px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors">
             Start Free Trial
@@ -851,14 +851,14 @@ function DemoSettings({ activeLocationId }: { activeLocationId: number | null })
       <Card className="border-blue-100 bg-blue-50/30">
         <CardHeader className="pb-2 border-b border-blue-100">
           <CardTitle className="text-sm font-semibold text-blue-900 flex items-center gap-2">
-            <GraduationCap className="w-4 h-4" />Texas Training Requirements by Facility Type
+            <GraduationCap className="w-4 h-4" />Texas Training Requirements by Program Type
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader className="bg-blue-50/60">
               <TableRow>
-                <TableHead>Facility Type</TableHead>
+                <TableHead>Program Type</TableHead>
                 <TableHead>Governing Chapter</TableHead>
                 <TableHead>Director Annual Hrs</TableHead>
                 <TableHead>Caregiver Annual Hrs</TableHead>

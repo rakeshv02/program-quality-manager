@@ -94,10 +94,10 @@ export default function RisingStarPage() {
         </Card>
       ) : (
         <>
-          {/* Facility type notice */}
+          {/* Program type notice */}
           <div className="flex items-center gap-2 text-sm text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
             <BookOpen className="w-4 h-4 shrink-0" />
-            <span><strong>{meta?.tacLabel}</strong> — {meta?.label} · TRS certification is available for this facility type.</span>
+            <span><strong>{meta?.tacLabel}</strong> — {meta?.label} · TRS certification is available for this program type.</span>
           </div>
 
           <Card className="overflow-hidden border-2 border-primary/20 shadow-sm">

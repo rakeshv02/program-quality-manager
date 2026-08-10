@@ -163,7 +163,7 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      {/* ── Facility Type Selector — always first ── */}
+      {/* ── Program Type Selector — always first ── */}
       <FacilityTypeSelector
         activeFacilityType={activeFacilityType}
         setActiveFacilityType={setActiveFacilityType}
@@ -171,7 +171,7 @@ export default function Dashboard() {
 
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-        <p className="text-gray-500 text-sm mt-0.5">Certification compliance overview for your facilities.</p>
+        <p className="text-gray-500 text-sm mt-0.5">Staff certification and quality overview across your programs.</p>
       </div>
 
       {/* Stat Cards */}
@@ -194,7 +194,7 @@ export default function Dashboard() {
             <div className="flex items-center gap-4">
               <div className="p-3 rounded-md bg-green-50 text-green-600"><CheckCircle2 className="w-6 h-6" /></div>
               <div>
-                <p className="text-sm font-medium text-gray-500">Compliant Staff</p>
+                <p className="text-sm font-medium text-gray-500">Certified Staff</p>
                 <h3 className="text-2xl font-bold text-gray-900">
                   {isLoadingDashboard ? <Skeleton className="h-8 w-16" /> : dashboard?.compliantStaff}
                 </h3>
@@ -236,7 +236,7 @@ export default function Dashboard() {
           <Card>
             <CardHeader className="pb-3 border-b">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg font-medium">Location Compliance Breakdown</CardTitle>
+                <CardTitle className="text-lg font-medium">Program Quality Overview</CardTitle>
                 <Building2 className="w-5 h-5 text-gray-400" />
               </div>
             </CardHeader>
@@ -245,9 +245,9 @@ export default function Dashboard() {
                 <TableHeader className="bg-gray-50">
                   <TableRow>
                     <TableHead>Location</TableHead>
-                    <TableHead>Facility Type</TableHead>
+                    <TableHead>Program Type</TableHead>
                     <TableHead className="text-right">Staff</TableHead>
-                    <TableHead className="text-right">Compliant</TableHead>
+                    <TableHead className="text-right">Certified</TableHead>
                     <TableHead className="text-right">Expiring</TableHead>
                     <TableHead className="text-right">Expired</TableHead>
                   </TableRow>
@@ -304,7 +304,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Training Requirements Reference for Selected Facility Type */}
+          {/* Training Requirements Reference for Selected Program Type */}
           <Card className="border-gray-100">
             <CardHeader className="pb-3 border-b bg-gray-50/60">
               <div className="flex items-center gap-2">
@@ -349,7 +349,7 @@ export default function Dashboard() {
               )}
               {FACILITY_META[activeFacilityType].participatesTRS && (
                 <div className="px-4 py-2 bg-amber-50 border-t border-amber-100 text-xs text-amber-700 font-medium flex items-center gap-1.5">
-                  <span>⭐</span> This facility type is eligible for Texas Rising Star (TRS) certification.
+                  <span>⭐</span> This program type is eligible for Texas Rising Star (TRS) certification.
                 </div>
               )}
             </CardContent>

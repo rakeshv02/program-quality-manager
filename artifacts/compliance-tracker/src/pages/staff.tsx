@@ -190,7 +190,7 @@ export default function StaffPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">Staff Management</h1>
           <p className="text-gray-500 mt-1">
-            Manage personnel and training compliance.
+            Manage staff certifications and training quality.
             {activeMeta && (
               <span className="ml-2 inline-flex items-center gap-1 text-xs text-blue-700 bg-blue-50 border border-blue-100 rounded px-2 py-0.5">
                 <BookOpen className="w-3 h-3" />
@@ -491,7 +491,7 @@ export default function StaffPage() {
 
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-2 my-2">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Pro Plan includes</p>
-            {["Unlimited staff members", "Unlimited locations", "Advanced compliance reports", "Priority support"].map(f => (
+            {["Unlimited staff members", "Unlimited locations", "Advanced quality reports", "Priority support"].map(f => (
               <div key={f} className="flex items-center gap-2 text-sm text-gray-700">
                 <span className="text-emerald-500 font-bold">✓</span> {f}
               </div>

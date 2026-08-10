@@ -36,7 +36,7 @@ const FACILITY_CARDS: {
   },
 ];
 
-// Key training hours per facility type shown inside each card
+// Key training hours per program type shown inside each card
 const HOURS_SUMMARY: Record<FacilityType, { role: string; annual: number; preservice: number }[]> = {
   child_care_center: [
     { role: "Director",          annual: 30, preservice: 24 },
@@ -80,10 +80,10 @@ export function FacilityTypeSelector({
         </div>
         <div>
           <h2 className="font-bold text-gray-900 text-base leading-tight">
-            What type of facility do you operate?
+            What type of program do you operate?
           </h2>
           <p className="text-xs text-gray-500 mt-0.5">
-            Select your facility type to see the correct TAC chapter, staff roles, and training hour requirements.
+            Select your program type to see the correct TAC chapter, staff roles, and training hour requirements.
           </p>
         </div>
       </div>

@@ -1,2 +1,16 @@
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /staff
+Disallow: /certifications
+Disallow: /rising-star
+Disallow: /reports
+Disallow: /settings
+Disallow: /sign-in
+Disallow: /sign-up
+
+# Allow indexing of public pages
+Allow: /
+Allow: /demo
+
+Sitemap: https://texas-childcare-advisors.replit.app/sitemap.xml

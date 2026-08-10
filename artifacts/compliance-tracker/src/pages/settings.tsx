@@ -162,7 +162,7 @@ export default function SettingsPage() {
               <ul className="space-y-2 text-sm text-gray-300 mb-6">
                 <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />Up to {dashboard?.freeTierUsage?.staffLimit || 12} staff members</li>
                 <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />Up to {dashboard?.freeTierUsage?.locationLimit || 2} locations</li>
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />All Texas facility types (TAC 744, 746, 747)</li>
+                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />All Texas program types (TAC 744, 746, 747)</li>
                 <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />Training hours tracking</li>
               </ul>
               <Button className="w-full bg-white text-gray-900 hover:bg-gray-100" disabled>Upgrade Plan (Coming Soon)</Button>
@@ -217,7 +217,7 @@ export default function SettingsPage() {
                 <div className="p-12 text-center text-gray-500">
                   <Building2 className="w-10 h-10 text-gray-300 mx-auto mb-3" />
                   <p className="text-base font-medium text-gray-900">No locations added</p>
-                  <p className="text-sm mt-1">Add your first location to start tracking compliance.</p>
+                  <p className="text-sm mt-1">Add your first location to start tracking staff quality and certifications.</p>
                 </div>
               ) : (
                 <ul className="divide-y divide-gray-100">
@@ -265,14 +265,14 @@ export default function SettingsPage() {
         <DialogContent className="sm:max-w-[480px]">
           <DialogHeader>
             <DialogTitle>{selectedLocation ? "Edit Location" : "Add Location"}</DialogTitle>
-            <DialogDescription>Provide the details for this facility. The facility type determines which TAC chapter governs training requirements.</DialogDescription>
+            <DialogDescription>Provide the details for this location. The program type determines which TAC chapter governs training requirements.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="facilityType">Facility Type *</Label>
+              <Label htmlFor="facilityType">Program Type *</Label>
               <Select value={formData.facilityType} onValueChange={(v) => setFormData({ ...formData, facilityType: v as FacilityType })}>
                 <SelectTrigger id="facilityType">
-                  <SelectValue placeholder="Select facility type" />
+                  <SelectValue placeholder="Select program type" />
                 </SelectTrigger>
                 <SelectContent>
                   {(Object.entries(FACILITY_META) as [FacilityType, typeof FACILITY_META[FacilityType]][]).map(([key, meta]) => (

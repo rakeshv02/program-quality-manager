@@ -1,6 +1,6 @@
 export function getStatusBadge(status: string) {
   if (status === 'valid' || status === 'no_expiry') {
-    return { label: 'Compliant', classes: 'bg-green-100 text-green-800 border-green-200' };
+    return { label: 'Certified', classes: 'bg-green-100 text-green-800 border-green-200' };
   }
   if (status === 'expiring') {
     return { label: 'Expiring Soon', classes: 'bg-amber-100 text-amber-800 border-amber-200' };
