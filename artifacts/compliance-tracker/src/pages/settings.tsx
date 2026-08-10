@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useUser } from "@clerk/react";
 import { 
   useListLocations, 
   useCreateLocation, 
@@ -49,13 +50,50 @@ export default function SettingsPage() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const { activeLocationId } = useLocationContext();
+  const { user } = useUser();
   
   const { data: locations, isLoading: isLoadingLocations } = useListLocations();
   const { data: dashboard } = useGetDashboard();
   
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isUpgrading, setIsUpgrading] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
+
+  const handleUpgradeToPro = async () => {
+    try {
+      setIsUpgrading(true);
+      const response = await fetch("/api/payments/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create checkout session");
+      }
+
+      const { url } = await response.json();
+      if (url) {
+        window.location.href = url;
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to redirect to checkout",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Upgrade error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to start checkout. Please try again.",
+        variant: "destructive",
+      });
+      setIsUpgrading(false);
+    }
+  };
   
   const [formData, setFormData] = useState({
     name: "",
@@ -158,14 +196,24 @@ export default function SettingsPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold mb-2">Free Tier</div>
+              <div className="text-3xl font-bold mb-2">Pro Tier</div>
+              <div className="text-2xl font-bold text-primary mb-4">$49<span className="text-lg font-normal text-gray-400">/month</span></div>
               <ul className="space-y-2 text-sm text-gray-300 mb-6">
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />Up to {dashboard?.freeTierUsage?.staffLimit || 12} staff members</li>
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />Up to {dashboard?.freeTierUsage?.locationLimit || 2} locations</li>
+                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />Unlimited staff members</li>
+                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />Unlimited locations</li>
                 <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />All Texas program types (TAC 744, 746, 747)</li>
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />Training hours tracking</li>
+                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />Clock hour tracking & reports</li>
+                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />SMS alerts for expiring certifications</li>
+                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />PDF reports for inspections</li>
+                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-primary" />Email support</li>
               </ul>
-              <Button className="w-full bg-white text-gray-900 hover:bg-gray-100" disabled>Upgrade Plan (Coming Soon)</Button>
+              <Button 
+                className="w-full bg-primary text-white hover:bg-primary/90" 
+                onClick={handleUpgradeToPro}
+                disabled={isUpgrading}
+              >
+                {isUpgrading ? "Processing..." : "Upgrade to Pro - $49/month"}
+              </Button>
             </CardContent>
           </Card>
 
