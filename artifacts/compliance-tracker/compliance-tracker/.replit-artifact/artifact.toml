@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Texas Childcare Advisors Compliance Tracker"
+description = "A SaaS compliance tracking dashboard for Texas daycare centers. Tracks staff certifications, expiration dates, Rising Star scoring progress, and supports multiple locations. Includes free tier limits (15 staff, 3 locations) with future paid upgrade paths."
+version = "1.0.0"
+id = "artifacts/compliance-tracker"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21186
+
+[services.development]
+run = "pnpm --filter @workspace/compliance-tracker run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/compliance-tracker", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/compliance-tracker/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21186"
+BASE_PATH = "/"
