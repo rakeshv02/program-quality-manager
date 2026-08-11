@@ -9,6 +9,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { LocationProvider } from "@/context/location-context";
 
+import { setBaseUrl } from "@workspace/api-client-react";
+
+// Configure API client to use Render backend
+setBaseUrl("https://program-quality-manager.onrender.com");
+
 const queryClient = new QueryClient();
 
 const clerkPubKey = publishableKeyFromHost(
